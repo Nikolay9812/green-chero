@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
         // When the character dies this script is turned off, so make shure he dosen't keep "walking"
         IsMoving = false;
-        MoveAmount= 0f;
+        MoveAmount = 0f;
     }
 
     void Update()

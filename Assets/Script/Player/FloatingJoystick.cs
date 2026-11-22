@@ -48,12 +48,13 @@ public class FloatingJoystick : MonoBehaviour
             //if(PauseMenu.IsOverPauseButton(screenPosition)) return;
 
             // Finger down: place the joystick right here
-            isHeld= true;
+            isHeld = true;
             startPosition = localPoint;
             background.anchoredPosition = startPosition;
             knob.anchoredPosition = Vector2.zero;
             background.gameObject.SetActive(true);
-        }else if (isHeld && pointer.press.isPressed)
+        }
+        else if (isHeld && pointer.press.isPressed)
         {
             // Dragging: move the knob, but keep it inside the circle
             Vector2 offset = Vector2.ClampMagnitude(localPoint - startPosition, radius);
@@ -61,7 +62,8 @@ public class FloatingJoystick : MonoBehaviour
 
             Vector2 direction = offset / radius;
             Direction = direction.magnitude < deadZone ? Vector2.zero : direction;
-        }else if (isHeld)
+        }
+        else if (isHeld)
         {
             // Finger lifted
             Hide();
@@ -123,14 +125,14 @@ public class FloatingJoystick : MonoBehaviour
     private static Sprite CreateCircleSprite(int size)
     {
         Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        float center = (size -1) / 2f;
+        float center = (size - 1) / 2f;
         float circleRadius = size / 2f;
 
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
             {
-                float distance = Vector2.Distance(new Vector2(x,y), new Vector2(center, center));
+                float distance = Vector2.Distance(new Vector2(x, y), new Vector2(center, center));
                 float alpha = Mathf.Clamp01(circleRadius - distance);
                 texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
             }

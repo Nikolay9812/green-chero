@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Archero-style movement: move in world directions (W = up the screen),
-// turn smoothly to face the direction of travel, and stay on the ground.
+// turn smoothly to face the direction of travel, and stays on the ground.
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {

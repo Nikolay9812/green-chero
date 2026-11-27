@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Archero-style camera: high, fixed angle that follows the player smoothly
-// but never rotates (rotating the camera makes the controls fell confusing).
+// but never rotates (rotating the camera makes the controls feel confusing).
 // [ExecuteAlways] also runs it in the editor, so the Game view shows the real angle without pressing Play.
 // It can also shake: call CameraFollow.Shake(...) from anywhere (player hit, enemy death...).
 [ExecuteAlways]
@@ -11,8 +11,8 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset = new Vector3(0f, 14f, -8f);
     public float smoothTime = 0.15f; // lower = snappier
 
-    // How many maters of the level should fit across the screen ( the room is 12 m wide + walls).
-    // Planes have different shapes, so the camera zooms to aways show this width.
+    // How many meters of the level should fit across the screen ( the room is 12 m wide + walls).
+    // Phones have different shapes, so the camera zooms to always show this width.
     public float visibleWidth = 14f;
 
     // Untick to switch every shake off ( some players don't like it, a nice option for settings menu later)
@@ -28,7 +28,7 @@ public class CameraFollow : MonoBehaviour
     // and add the shake on top only at the end, so shaking never disturbs the following.
     private Vector3 followPosition;
 
-    private float shakesStrength; //meters
+    private float shakeStrength; //meters
     private float shakeTime; // how long the current shake lasts in total
     private float shakeTimer; // how much of it is left
 
@@ -52,23 +52,23 @@ public class CameraFollow : MonoBehaviour
         SnapToTarget();
     }
 
-    // Shakes the camera by up to 'strength' maters; calming dow over 'time' seconds.
+    // Shakes the camera by up to 'strength' meters; calming down over 'time' seconds.
     // "static" so other scripts can just write CameraFollow.Shake(0.2f, 0.15f).
     public static void Shake(float strength, float time)
     {
-        // Off it unticked her OR swithced off by the player in the settings
+        // Off if unticked here OR switched off by the player in the settings
         if (Instance == null || !Instance.shakeEnabled) return;
 
         // A weak shake must not cut short a strong one that is still going (e.g. the boss dying)
-        float currentStrength = Instance.shakeTimer > 0f ? Instance.shakesStrength * (Instance.shakeTimer / Instance.shakeTime) : 0f;
+        float currentStrength = Instance.shakeTimer > 0f ? Instance.shakeStrength * (Instance.shakeTimer / Instance.shakeTime) : 0f;
         if (strength < currentStrength) return;
 
-        Instance.shakesStrength = strength;
+        Instance.shakeStrength = strength;
         Instance.shakeTime = time;
         Instance.shakeTimer = time;
     }
 
-    // Jumps straight to the player and aims at them; the angle then stay fixed.
+    // Jumps straight to the player and aims at them; the angle then stays fixed.
     // Also used by ChapterManager after the player is moved to the new room.
     public void SnapToTarget()
     {
@@ -77,7 +77,7 @@ public class CameraFollow : MonoBehaviour
         followPosition = target.position + offset;
         transform.position = followPosition;
         transform.rotation = Quaternion.LookRotation(-offset);
-        velocity = Vector3.zero; // forgot the old smoothing speed
+        velocity = Vector3.zero; // forget the old smoothing speed
     }
 
     void LateUpdate()
@@ -107,7 +107,7 @@ public class CameraFollow : MonoBehaviour
         if (shakeTimer <= 0f) return Vector3.zero;
 
         shakeTimer -= Time.unscaledDeltaTime;
-        float strength = shakesStrength * Mathf.Max(shakeTimer / shakeTime, 0f);
+        float strength = shakeStrength * Mathf.Max(shakeTimer / shakeTime, 0f);
 
         // Move along the screen's own left/right and up/down, so it looks the same for any angle
         Vector2 random = Random.insideUnitCircle * strength;
